@@ -70,7 +70,7 @@
 
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 300px;
+            grid-template-columns: 1fr 350px;
             gap: 30px;
             margin-bottom: 30px;
         }
@@ -82,12 +82,21 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
+        .user-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
         .admin-panel {
             background: white;
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             height: fit-content;
+            margin-top: 20px;
         }
 
         .section-title {
@@ -99,61 +108,46 @@
             gap: 10px;
         }
 
-        .vcf-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .vcf-card {
+        .vcf-display {
             background: #f8f9fa;
             border: 2px solid #e9ecef;
             border-radius: 15px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .vcf-card:hover {
-            border-color: #25D366;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.2);
-        }
-
-        .vcf-card.selected {
-            border-color: #25D366;
-            background: #f0fff4;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .vcf-title {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: bold;
             color: #128C7E;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .vcf-info {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            font-size: 1rem;
             color: #666;
         }
 
         .vcf-description {
             color: #666;
-            margin-bottom: 15px;
-            line-height: 1.4;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 1.1rem;
         }
 
-        .vcf-actions {
-            display: flex;
-            gap: 10px;
+        .download-section {
+            background: #e8f5e8;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -163,7 +157,10 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 10px;
         }
 
         .btn-primary {
@@ -241,6 +238,47 @@
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
+        }
+
+        .user-number-form {
+            background: #f0f8ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .added-numbers {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .number-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .number-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .delete-number {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
         }
 
         .how-to-use {
@@ -350,6 +388,11 @@
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            min-width: 300px;
         }
 
         .alert-success {
@@ -376,12 +419,17 @@
             white-space: pre-line;
         }
 
+        .no-vcf-message {
+            text-align: center;
+            color: #666;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 2px dashed #ddd;
+        }
+
         @media (max-width: 768px) {
             .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .vcf-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -427,7 +475,7 @@
     <div class="container">
         <div class="header">
             <h1>📱 WhatsApp Status Booster</h1>
-            <p>Boost your WhatsApp status views with our premium VCF contact files</p>
+            <p>Add your number and download VCF to boost your WhatsApp status views</p>
         </div>
 
         <div class="stats-bar">
@@ -436,12 +484,12 @@
                 <span class="stat-label">Total Downloads</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number" id="activeUsers">3,256</span>
-                <span class="stat-label">Active Users</span>
+                <span class="stat-number" id="totalNumbers">0</span>
+                <span class="stat-label">Numbers Added</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number" id="vcfFiles">0</span>
-                <span class="stat-label">Available VCF Files</span>
+                <span class="stat-number" id="activeUsers">3,256</span>
+                <span class="stat-label">Active Users</span>
             </div>
             <div class="stat-item">
                 <span class="stat-number">99.9%</span>
@@ -452,66 +500,80 @@
         <div class="main-content">
             <div class="vcf-section">
                 <h2 class="section-title">
-                    📋 Available VCF Files
+                    📋 VCF Status Booster
                 </h2>
-                <div id="vcfGrid" class="vcf-grid">
-                    <!-- VCF files will be loaded here -->
-                </div>
-                <div id="noFiles" style="text-align: center; color: #666; padding: 40px;">
-                    <h3>No VCF files available yet</h3>
-                    <p>Admin can add VCF files using the admin panel</p>
+                
+                <div id="vcfDisplay">
+                    <!-- VCF display will be loaded here -->
                 </div>
             </div>
 
-            <div class="admin-panel">
+            <div class="user-panel">
                 <h2 class="section-title">
-                    🔐 Admin Panel
+                    📞 Add Your Number
                 </h2>
                 
-                <div id="adminLogin" class="admin-login">
-                    <div class="login-form">
-                        <div class="form-group">
-                            <label class="form-label">Admin Password</label>
-                            <input type="password" id="adminPassword" class="form-input" placeholder="Enter admin password">
-                        </div>
-                        <button class="btn btn-primary" onclick="adminLogin()">
-                            🔓 Login
-                        </button>
+                <div class="user-number-form">
+                    <div class="form-group">
+                        <label class="form-label">Your Name</label>
+                        <input type="text" id="userName" class="form-input" placeholder="Enter your name">
                     </div>
-                    <p style="font-size: 0.8rem; color: #666;">Default password: admin123</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" id="userPhone" class="form-input" placeholder="+1234567890">
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="addUserNumber()">
+                        ➕ Add My Number
+                    </button>
                 </div>
 
-                <div id="adminForm" class="admin-form">
-                    <div class="form-group">
-                        <label class="form-label">VCF File Title</label>
-                        <input type="text" id="vcfTitle" class="form-input" placeholder="e.g., Premium Status Boosters">
-                    </div>
+                <div id="addedNumbers" class="added-numbers" style="display: none;">
+                    <h4 style="margin-bottom: 10px; color: #128C7E;">Added Numbers:</h4>
+                    <div id="numbersList"></div>
+                </div>
+
+                <div class="admin-panel">
+                    <h2 class="section-title">
+                        🔐 Admin Panel
+                    </h2>
                     
-                    <div class="form-group">
-                        <label class="form-label">Description</label>
-                        <textarea id="vcfDescription" class="form-input form-textarea" placeholder="Describe this VCF file..."></textarea>
+                    <div id="adminLogin" class="admin-login">
+                        <div class="login-form">
+                            <div class="form-group">
+                                <label class="form-label">Admin Password</label>
+                                <input type="password" id="adminPassword" class="form-input" placeholder="Enter admin password">
+                            </div>
+                            <button class="btn btn-primary" onclick="adminLogin()">
+                                🔓 Login
+                            </button>
+                        </div>
+                        <p style="font-size: 0.8rem; color: #666;">Admin access required</p>
                     </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Contact Count</label>
-                        <input type="number" id="contactCount" class="form-input" placeholder="Number of contacts" min="1">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">VCF File Content</label>
-                        <textarea id="vcfContent" class="form-input form-textarea" placeholder="Paste VCF content here..." style="min-height: 150px; font-family: monospace;"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <button class="btn btn-primary" onclick="addVCFFile()">
-                            ➕ Add VCF File
-                        </button>
-                        <button class="btn btn-secondary" onclick="generateSampleVCF()">
-                            🎲 Generate Sample
-                        </button>
-                        <button class="btn btn-danger" onclick="adminLogout()">
-                            🚪 Logout
-                        </button>
+
+                    <div id="adminForm" class="admin-form">
+                        <div class="form-group">
+                            <label class="form-label">VCF File Title</label>
+                            <input type="text" id="vcfTitle" class="form-input" placeholder="e.g., Premium Status Boosters">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea id="vcfDescription" class="form-input form-textarea" placeholder="Describe this VCF file..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button class="btn btn-primary" onclick="updateVCFFile()">
+                                📝 Update VCF File
+                            </button>
+                            <button class="btn btn-secondary" onclick="clearAllNumbers()">
+                                🗑️ Clear All Numbers
+                            </button>
+                            <button class="btn btn-danger" onclick="adminLogout()">
+                                🚪 Logout
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -524,23 +586,23 @@
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <div class="step-title">Download VCF</div>
-                    <div class="step-description">Choose and download a VCF file from our collection</div>
+                    <div class="step-title">Add Your Number</div>
+                    <div class="step-description">Enter your name and phone number to join the network</div>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
+                    <div class="step-title">Download VCF</div>
+                    <div class="step-description">Download the VCF file containing all network numbers</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
                     <div class="step-title">Import Contacts</div>
                     <div class="step-description">Import the VCF file to your phone's contact list</div>
                 </div>
                 <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-title">Post Status</div>
-                    <div class="step-description">Post your WhatsApp status as usual</div>
-                </div>
-                <div class="step">
                     <div class="step-number">4</div>
                     <div class="step-title">Get More Views</div>
-                    <div class="step-description">Enjoy increased views from the imported contacts</div>
+                    <div class="step-description">Post WhatsApp status and get views from network members</div>
                 </div>
             </div>
         </div>
@@ -568,11 +630,16 @@
         // Admin credentials
         const ADMIN_PASSWORD = 'ntandomodspro';
         let isAdminLoggedIn = false;
-        let vcfFiles = [];
+        let vcfInfo = {
+            title: 'WhatsApp Status Booster Network',
+            description: 'Join our network to boost your WhatsApp status views. Add your number and download the VCF file to get started!'
+        };
+        let userNumbers = [];
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            loadVCFFiles();
+            loadData();
+            displayVCF();
             updateStats();
             
             // Auto-increment stats for demo
@@ -586,6 +653,11 @@
                 isAdminLoggedIn = true;
                 document.getElementById('adminLogin').style.display = 'none';
                 document.getElementById('adminForm').classList.add('active');
+                
+                // Load current VCF info into form
+                document.getElementById('vcfTitle').value = vcfInfo.title;
+                document.getElementById('vcfDescription').value = vcfInfo.description;
+                
                 showAlert('Admin login successful!', 'success');
             } else {
                 showAlert('Invalid password!', 'error');
@@ -597,101 +669,206 @@
             document.getElementById('adminLogin').style.display = 'block';
             document.getElementById('adminForm').classList.remove('active');
             document.getElementById('adminPassword').value = '';
-            clearForm();
         }
 
-        // VCF file management
-        function addVCFFile() {
-            if (!isAdminLoggedIn) {
-                showAlert('Please login as admin first!', 'error');
+        // User number management
+        function addUserNumber() {
+            const name = document.getElementById('userName').value.trim();
+            const phone = document.getElementById('userPhone').value.trim();
+
+            if (!name || !phone) {
+                showAlert('Please enter both name and phone number!', 'error');
                 return;
             }
 
-            const title = document.getElementById('vcfTitle').value;
-            const description = document.getElementById('vcfDescription').value;
-            const contactCount = document.getElementById('contactCount').value;
-            const content = document.getElementById('vcfContent').value;
-
-            if (!title || !description || !contactCount || !content) {
-                showAlert('Please fill all fields!', 'error');
+            // Validate phone number format
+            const phoneRegex = /^\+?[\d\s\-\(\)]{10,}$/;
+            if (!phoneRegex.test(phone)) {
+                showAlert('Please enter a valid phone number!', 'error');
                 return;
             }
 
-            const vcfFile = {
+            // Check if number already exists
+            if (userNumbers.some(user => user.phone === phone)) {
+                showAlert('This number is already added!', 'error');
+                return;
+            }
+
+            const user = {
                 id: Date.now(),
-                title: title,
-                description: description,
-                contactCount: parseInt(contactCount),
-                content: content,
-                downloads: 0,
-                createdAt: new Date().toLocaleDateString()
+                name: name,
+                phone: phone,
+                addedAt: new Date().toLocaleDateString()
             };
 
-            vcfFiles.push(vcfFile);
-            saveVCFFiles();
-            loadVCFFiles();
-            clearForm();
-            showAlert('VCF file added successfully!', 'success');
+            userNumbers.push(user);
+            saveData();
+            displayNumbers();
+            updateStats();
+            displayVCF();
+            
+            // Clear form
+            document.getElementById('userName').value = '';
+            document.getElementById('userPhone').value = '';
+            
+            showAlert('Your number has been added successfully!', 'success');
         }
 
-        function deleteVCFFile(id) {
+        function deleteUserNumber(id) {
+            userNumbers = userNumbers.filter(user => user.id !== id);
+            saveData();
+            displayNumbers();
+            updateStats();
+            displayVCF();
+            showAlert('Number removed successfully!', 'success');
+        }
+
+        function clearAllNumbers() {
             if (!isAdminLoggedIn) {
                 showAlert('Admin access required!', 'error');
                 return;
             }
 
-            if (confirm('Are you sure you want to delete this VCF file?')) {
-                vcfFiles = vcfFiles.filter(file => file.id !== id);
-                saveVCFFiles();
-                loadVCFFiles();
-                showAlert('VCF file deleted successfully!', 'success');
+            if (confirm('Are you sure you want to clear all numbers? This action cannot be undone.')) {
+                userNumbers = [];
+                saveData();
+                displayNumbers();
+                updateStats();
+                displayVCF();
+                showAlert('All numbers cleared successfully!', 'success');
             }
         }
 
-        function downloadVCF(id) {
-            const file = vcfFiles.find(f => f.id === id);
-            if (!file) return;
+        function updateVCFFile() {
+            if (!isAdminLoggedIn) {
+                showAlert('Admin access required!', 'error');
+                return;
+            }
 
-            // Increment download count
-            file.downloads++;
-            saveVCFFiles();
-            updateStats();
+            const title = document.getElementById('vcfTitle').value.trim();
+            const description = document.getElementById('vcfDescription').value.trim();
 
-            // Create and download file
-            const blob = new Blob([file.content], { type: 'text/vcard' });
+            if (!title || !description) {
+                showAlert('Please fill in both title and description!', 'error');
+                return;
+            }
+
+            vcfInfo.title = title;
+            vcfInfo.description = description;
+            
+            saveData();
+            displayVCF();
+            showAlert('VCF file information updated successfully!', 'success');
+        }
+
+        // Display functions
+        function displayVCF() {
+            const vcfDisplay = document.getElementById('vcfDisplay');
+            
+            if (userNumbers.length === 0) {
+                vcfDisplay.innerHTML = `
+                    <div class="no-vcf-message">
+                        <h3>No Numbers Available Yet</h3>
+                        <p>Be the first to add your number to the network!</p>
+                        <p>Once numbers are added, you can download the VCF file here.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            vcfDisplay.innerHTML = `
+                <div class="vcf-display">
+                    <div class="vcf-title">${vcfInfo.title}</div>
+                    <div class="vcf-info">
+                        <span>📱 ${userNumbers.length} contacts</span>
+                        <span>📅 Updated today</span>
+                    </div>
+                    <div class="vcf-description">${vcfInfo.description}</div>
+                    
+                    <div class="download-section">
+                        <button class="btn btn-primary" onclick="downloadVCF()">
+                            📥 Download VCF File
+                        </button>
+                        <button class="btn btn-secondary" onclick="previewVCF()">
+                            👁️ Preview Contacts
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayNumbers() {
+            const numbersList = document.getElementById('numbersList');
+            const addedNumbers = document.getElementById('addedNumbers');
+
+            if (userNumbers.length === 0) {
+                addedNumbers.style.display = 'none';
+                return;
+            }
+
+            addedNumbers.style.display = 'block';
+            numbersList.innerHTML = userNumbers.map(user => `
+                <div class="number-item">
+                    <span><strong>${user.name}</strong> - ${user.phone}</span>
+                    <button class="delete-number" onclick="deleteUserNumber(${user.id})">×</button>
+                </div>
+            `).join('');
+        }
+
+        // VCF file operations
+        function generateVCFContent() {
+            return userNumbers.map(user => 
+                `BEGIN:VCARD\nVERSION:3.0\nFN:${user.name}\nTEL:${user.phone}\nEND:VCARD`
+            ).join('\n');
+        }
+
+        function downloadVCF() {
+            if (userNumbers.length === 0) {
+                showAlert('No numbers available to download!', 'error');
+                return;
+            }
+
+            const vcfContent = generateVCFContent();
+            const blob = new Blob([vcfContent], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${file.title.replace(/[^a-z0-9]/gi, '_')}.vcf`;
+            a.download = `${vcfInfo.title.replace(/[^a-z0-9]/gi, '_')}.vcf`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
 
+            // Update download count
+            const currentDownloads = parseInt(localStorage.getItem('downloadCount') || '0');
+            localStorage.setItem('downloadCount', (currentDownloads + 1).toString());
+            updateStats();
+
             showAlert('VCF file downloaded successfully!', 'success');
-            loadVCFFiles(); // Refresh to show updated download count
         }
 
-        function previewVCF(id) {
-            const file = vcfFiles.find(f => f.id === id);
-            if (!file) return;
+        function previewVCF() {
+            if (userNumbers.length === 0) {
+                showAlert('No numbers available to preview!', 'error');
+                return;
+            }
 
             const modalBody = document.getElementById('modalBody');
             modalBody.innerHTML = `
                 <div class="form-group">
                     <label class="form-label">Title</label>
-                    <div style="padding: 10px; background: #f8f9fa; border-radius: 5px;">${file.title}</div>
+                    <div style="padding: 10px; background: #f8f9fa; border-radius: 5px;">${vcfInfo.title}</div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Description</label>
-                    <div style="padding: 10px; background: #f8f9fa; border-radius: 5px;">${file.description}</div>
+                    <div style="padding: 10px; background: #f8f9fa; border-radius: 5px;">${vcfInfo.description}</div>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Contacts (${file.contactCount})</label>
-                    <div class="contact-list">${file.content}</div>
+                    <label class="form-label">Contacts (${userNumbers.length})</label>
+                    <div class="contact-list">${generateVCFContent()}</div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-primary" onclick="downloadVCF(${file.id}); closeModal();">
+                    <button class="btn btn-primary" onclick="downloadVCF(); closeModal();">
                         📥 Download VCF
                     </button>
                 </div>
@@ -704,95 +881,36 @@
             document.getElementById('vcfModal').classList.remove('active');
         }
 
-        // Generate sample VCF for testing
-        function generateSampleVCF() {
-            const sampleContacts = [];
-            const names = ['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Wilson', 'David Brown'];
+        // Data persistence
+        function loadData() {
+            const savedNumbers = localStorage.getItem('userNumbers');
+            const savedVCFInfo = localStorage.getItem('vcfInfo');
             
-            for (let i = 0; i < 5; i++) {
-                const phone = `+1555${String(Math.floor(Math.random() * 9000) + 1000)}`;
-                sampleContacts.push(`BEGIN:VCARD
-VERSION:3.0
-FN:${names[i]}
-TEL:${phone}
-END:VCARD`);
+            if (savedNumbers) {
+                userNumbers = JSON.parse(savedNumbers);
             }
-
-            document.getElementById('vcfTitle').value = 'Sample Status Boosters';
-            document.getElementById('vcfDescription').value = 'Sample VCF file with 5 contacts for testing purposes';
-            document.getElementById('contactCount').value = '5';
-            document.getElementById('vcfContent').value = sampleContacts.join('\n');
-        }
-
-        // Load and save VCF files from localStorage
-        function loadVCFFiles() {
-            const saved = localStorage.getItem('vcfFiles');
-            if (saved) {
-                vcfFiles = JSON.parse(saved);
+            
+            if (savedVCFInfo) {
+                vcfInfo = JSON.parse(savedVCFInfo);
             }
-            renderVCFFiles();
-            updateStats();
+            
+            displayNumbers();
         }
 
-        function saveVCFFiles() {
-            localStorage.setItem('vcfFiles', JSON.stringify(vcfFiles));
-        }
-
-        function renderVCFFiles() {
-            const grid = document.getElementById('vcfGrid');
-            const noFiles = document.getElementById('noFiles');
-
-            if (vcfFiles.length === 0) {
-                grid.style.display = 'none';
-                noFiles.style.display = 'block';
-                return;
-            }
-
-            grid.style.display = 'grid';
-            noFiles.style.display = 'none';
-
-            grid.innerHTML = vcfFiles.map(file => `
-                <div class="vcf-card">
-                    <div class="vcf-title">${file.title}</div>
-                    <div class="vcf-info">
-                        <span>📱 ${file.contactCount} contacts</span>
-                        <span>📥 ${file.downloads} downloads</span>
-                    </div>
-                    <div class="vcf-description">${file.description}</div>
-                    <div class="vcf-actions">
-                        <button class="btn btn-primary" onclick="downloadVCF(${file.id})">
-                            📥 Download
-                        </button>
-                        <button class="btn btn-secondary" onclick="previewVCF(${file.id})">
-                            👁️ Preview
-                        </button>
-                        ${isAdminLoggedIn ? `<button class="btn btn-danger" onclick="deleteVCFFile(${file.id})">🗑️</button>` : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function clearForm() {
-            document.getElementById('vcfTitle').value = '';
-            document.getElementById('vcfDescription').value = '';
-            document.getElementById('contactCount').value = '';
-            document.getElementById('vcfContent').value = '';
+        function saveData() {
+            localStorage.setItem('userNumbers', JSON.stringify(userNumbers));
+            localStorage.setItem('vcfInfo', JSON.stringify(vcfInfo));
         }
 
         function updateStats() {
-            const totalDownloads = vcfFiles.reduce((sum, file) => sum + file.downloads, 0);
-            document.getElementById('vcfFiles').textContent = vcfFiles.length;
-            if (totalDownloads > 0) {
-                document.getElementById('totalDownloads').textContent = (12847 + totalDownloads).toLocaleString();
-            }
+            const downloadCount = parseInt(localStorage.getItem('downloadCount') || '0');
+            document.getElementById('totalNumbers').textContent = userNumbers.length;
+            document.getElementById('totalDownloads').textContent = (12847 + downloadCount).toLocaleString();
         }
 
         function updateLiveStats() {
             // Simulate live stats updates
-            const currentDownloads = parseInt(document.getElementById('totalDownloads').textContent.replace(/,/g, ''));
             const currentUsers = parseInt(document.getElementById('activeUsers').textContent.replace(/,/g, ''));
-            
-            document.getElementById('totalDownloads').textContent = (currentDownloads + Math.floor(Math.random() * 3)).toLocaleString();
             document.getElementById('activeUsers').textContent = (currentUsers + Math.floor(Math.random() * 5) - 2).toLocaleString();
         }
 
@@ -805,15 +923,15 @@ END:VCARD`);
             alert.className = `alert alert-${type}`;
             alert.textContent = message;
             
-            document.body.insertBefore(alert, document.body.firstChild);
+            document.body.appendChild(alert);
             
             setTimeout(() => {
                 alert.remove();
-            }, 3000);
+            }, 4000);
         }
 
         function openWhatsApp() {
-            const message = "Hi! I'm using the WhatsApp Status Booster VCF Manager. It's amazing!";
+            const message = "Hi! I'm using the WhatsApp Status Booster. Join our network to boost your status views!";
             const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
         }
@@ -831,14 +949,6 @@ END:VCARD`);
                 closeModal();
             }
         });
-
-        // Auto-refresh VCF list when admin status changes
-        setInterval(() => {
-            const currentAdminStatus = document.getElementById('adminForm').classList.contains('active');
-            if (currentAdminStatus !== isAdminLoggedIn) {
-                renderVCFFiles();
-            }
-        }, 1000);
     </script>
 </body>
 </html>
